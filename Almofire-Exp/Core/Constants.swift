@@ -7,3 +7,25 @@
 //
 
 import Foundation
+
+struct K {
+    
+    struct ProductionSrver {
+        static let basePath = "https://jsonplaceholder.typicode.com"
+    }
+    
+    struct APIParameterKey {
+        static let postId = "postId"
+    }
+}
+
+enum HTTPHeaderKey: String {
+    case acceptType = "Accept"
+    case contentType = "Content-Type"
+}
+
+enum ContentType: String {
+    case json = "application/json"
+}
+
+

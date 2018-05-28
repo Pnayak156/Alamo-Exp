@@ -8,12 +8,39 @@
 
 import UIKit
 
-class CommentViewController: UIViewController {
+class CommentViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
+    var comments = [Comment]()
+    var postId: Int?
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return comments.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: CommentTableViewCell = tableView.dequeueReusableCell(withIdentifier: "CommentCellIdentifier", for: indexPath) as! CommentTableViewCell
+        let comment = comments[indexPath.row]
+        cell.nameLabel.text = comment.name
+        cell.emailLable.text = comment.email
+        cell.bodyLabel.text = comment.body
+        return cell
+    
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        if let postID = postId {
+            APIClient.comments(postId: postID, completion: { (result) in
+                switch result {
+                case .success(let comments):
+                    self.comments = comments
+                    self.tableView.reloadData()
+                case .failure(let error):
+                    print(error)
+                }
+            })
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,14 +49,11 @@ class CommentViewController: UIViewController {
     }
     
 
-    /*
-    // MARK: - Navigation
+    
+//     MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+//     In a storyboard-based application, you will often want to do a little preparation before navigation
+   
+    
 
 }

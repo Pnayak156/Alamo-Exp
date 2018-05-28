@@ -46,6 +46,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Dispose of any resources that can be recreated.
     }
 
-
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let identifier = segue.identifier, identifier == "commentVC" {
+            let vc: CommentViewController = segue.destination as! CommentViewController
+            if let row = tableView.indexPathForSelectedRow?.row {
+                let postId = posts[row].id
+                vc.postId = postId
+            }
+           
+        }
+    }
 }
 
